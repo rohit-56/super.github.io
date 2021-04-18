@@ -1,0 +1,226 @@
+<html>
+    <head>
+        <title>QUIZ</title>
+        <style type="text/css">
+        body{
+            background-image: url("quizimage.jpg");
+        }
+        .strt{
+            top: 220px;
+            left: 600px;
+            font-size: 40px;
+            font-weight: bolder;
+           word-break: break-all;
+           height: 80px;
+            width: auto;
+            padding: 2%;
+            background-color:cornsilk;
+            color:crimson;
+           cursor: pointer;
+            border: solid black;
+            position: absolute;
+        }
+        .counters{
+            top: 100px; 
+          left: 100px;
+          font-size: 60px;
+          font-weight: bolder;
+          height: 120px;
+          width: auto;
+          padding: 2%;
+          color: navy;
+          position:absolute;   
+        }
+        .ques{
+          top: 150px; 
+          left: 100px;
+          font-size: 60px;
+          font-weight: bolder;
+          height: 120px;
+          width: auto;
+          padding: 2%;
+          color: navy;
+          position:absolute;
+        }
+        .btn1{
+           top: 280px;
+           left: 90px;
+           font-size: 50px;
+           font-weight: bolder;
+           height: 150px;
+           width: 350px;
+           color: orangered;
+           background-color:pink ;
+           cursor: pointer;
+           position: absolute;
+           
+        }
+        .btn2{
+           top: 280px;
+           left: 980px;
+           font-size: 50px;
+           font-weight: bolder;
+           height: 150px;
+           width: 350px;
+           color: orangered;
+           background-color:pink;
+           cursor: pointer;
+           position: absolute;
+           
+        }
+        .btn3{
+           top: 450px;
+           left: 90px;
+           font-size: 50px;
+           font-weight: bolder;
+           height: 150px;
+           width: 350px;
+           color: orangered;
+           background-color:pink;
+           cursor: pointer;
+           position: absolute;
+        }
+        .btn4{
+           top: 450px;
+           left: 980px;
+           font-size: 50px;
+           font-weight: bolder;
+           height: 150px;
+           width: 350px;
+           color: orangered;
+           background-color:pink;
+           cursor: pointer;
+           position: absolute;
+        }
+        .sco{
+            top:130px;
+            left: 350px;
+            font-size: 30px;
+            height: auto;
+            width: auto;
+            font-weight: bolder;
+            position: absolute;
+            color:brown;
+            background-color: cornsilk;
+        }
+            </style>
+    </head>
+    <body>
+        <div class="strt" id="start">
+       <p>START QUIZ</p>
+        </div>
+        <div id="now" style="display: none;">
+            <div class="counters" id="counter"></div>
+            <div class="ques" id="question"></div>
+            
+                <button class="btn1" id="option1" onclick="checkanswer('A')"></button>
+                <button class="btn2" id="option2" onclick="checkanswer('B')"></button>
+            
+                <button class="btn3" id="option3" onclick="checkanswer('C')"></button>
+                <button class="btn4" id="option4" onclick="checkanswer('D')"></button> 
+            
+            </div>
+            <div class="sco" id="scoreof" style="display: none;">
+              <div>
+                <label>TOTAL ATTEMPT:</label>
+              <label id="ta"></label>
+              </div>
+              <br>
+              <div>
+              <label>RIGHT ANSWERS:</label>
+              <label id="ra"></label>
+              </div>
+              <br>
+              <div>
+              <label>WRONG ANSWERS:</label>
+              <label id="wa"></label>
+              </div>
+              <br>
+              <div>
+              <label>YOUR SCORE IS:</label>
+              <label id="sc"></label>
+              </div>
+            </div>
+            <script>
+                var start=document.getElementById("start");
+                var now=document.getElementById("now");
+                var scoreof=document.getElementById("scoreof");
+                var i=0,count=0,score=0,was=0;
+                var timer;
+                let questions=[{question:"Which language recently used for web development?",option1:"JAVASCRIPT",option2:"JAVA",option3:"PYTHON",option4:"C++",correct:"B"},
+                               {question:"Project is based on _____ langunage",option1:"JAVASCRIPT",option2:"JAVA",option3:"PYTHON",option4:"C++",correct:"A"},
+                            {question:"Which of the following is not a Java features?",option1:"Dynamic",option2:"Architecture Neutral",option3:"Use of pointers",option4:"Object-oriented",correct:"C"},
+                            {question:"_____ is used to find and fix bugs in the Java programs.",option1:"JVM",option2:"JRE",option3:"JDK",option4:"JDB",correct:"D"},
+                        {question:"What is the return type of the hashCode() method in the Object class?",option1:"object",option2:"int",option3:"void",option4:"long",correct:"B"}];  
+                
+                
+                start.addEventListener('click',startquiz);
+
+                function startquiz(){
+                     start.style.display="none";
+                     givequestion();
+                     now.style.display="block";
+                     rendercounter();
+                     timer=setInterval(rendercounter,1000);
+                }
+                
+                function givequestion(){
+                  var q=questions[i];
+                  document.getElementById("question").innerHTML=q.question;
+                  document.getElementById("option1").innerHTML=q.option1;
+                  document.getElementById("option2").innerHTML=q.option2;
+                  document.getElementById("option3").innerHTML=q.option3;
+                  document.getElementById("option4").innerHTML=q.option4;
+
+                }
+                function rendercounter(){
+                   if(count<=10){
+                       document.getElementById("counter").innerHTML=count;
+                       count++;
+                       if(count>10)
+                       was++;
+                   }
+                   else{
+                       count=0;
+                       if(i<4){
+                           i++;
+                       givequestion();
+                       }
+                       else{
+                           clearInterval(timer);
+                           resulttime();
+                       }
+                   }
+                }
+                function checkanswer(answer){
+                 
+                 if(answer==questions[i].correct)
+                 score++;
+                 else
+                 was++;
+                 count=0;
+                 if(i<4)
+                 {
+                     i++;
+                     givequestion();
+                 }
+                 else
+                 {
+                     clearInterval(timer);
+                     resulttime();
+                 }
+                }
+                function resulttime(){
+                    now.style.display="none";
+                    scoreof.style.display="block";
+                   dothis();
+                }
+                function dothis(){
+                    document.getElementById("ta").innerHTML=i+1;
+                    document.getElementById("ra").innerHTML=score;
+                    document.getElementById("wa").innerHTML=was;
+                    document.getElementById("sc").innerHTML=score;
+                }
+                </script>
+    </body>
+    </html>
